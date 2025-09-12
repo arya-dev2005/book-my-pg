@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Card, Button, StarRating, PGDetailsModal } from "@/components/ui";
 import { PG_LISTINGS } from "@/data/pgListings";
-import { PGListing } from "@/types";
+import { PGListing, SelectChangeEvent, FilterState, BaseSectionProps } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
 import { useWishlistContext } from "@/contexts/WishlistContext";
 import { Heart, MapPin, ExternalLink } from "lucide-react";
@@ -130,7 +130,7 @@ const PGCard: React.FC<PGCardProps> = ({ pg, onViewDetails }) => {
   );
 };
 
-export const PGSection: React.FC = () => {
+export const PGSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
   const { wishlistCount, toggleWishlist, isInWishlist } = useWishlistContext();
   
   // Filter state
@@ -260,7 +260,7 @@ export const PGSection: React.FC = () => {
             aria-label="Filter by price range"
             className="px-4 py-2 border border-gray-200 rounded-lg text-sm"
             value={priceFilter}
-            onChange={(e) => setPriceFilter(e.target.value)}
+            onChange={(e: SelectChangeEvent) => setPriceFilter(e.target.value)}
           >
             <option value="">Price Range</option>
             <option value="0-5000">Under ₹5,000</option>
@@ -273,7 +273,7 @@ export const PGSection: React.FC = () => {
             aria-label="Filter by distance"
             className="px-4 py-2 border border-gray-200 rounded-lg text-sm"
             value={distanceFilter}
-            onChange={(e) => setDistanceFilter(e.target.value)}
+            onChange={(e: SelectChangeEvent) => setDistanceFilter(e.target.value)}
           >
             <option value="">Distance</option>
             <option value="0-500">Within 500m</option>
@@ -285,7 +285,7 @@ export const PGSection: React.FC = () => {
             aria-label="Filter by facilities"
             className="px-4 py-2 border border-gray-200 rounded-lg text-sm"
             value={facilityFilter}
-            onChange={(e) => setFacilityFilter(e.target.value)}
+            onChange={(e: SelectChangeEvent) => setFacilityFilter(e.target.value)}
           >
             <option value="">Facilities</option>
             <option value="wifi">WiFi</option>
@@ -298,7 +298,7 @@ export const PGSection: React.FC = () => {
             aria-label="Filter by rating"
             className="px-4 py-2 border border-gray-200 rounded-lg text-sm"
             value={ratingFilter}
-            onChange={(e) => setRatingFilter(e.target.value)}
+            onChange={(e: SelectChangeEvent) => setRatingFilter(e.target.value)}
           >
             <option value="">Rating</option>
             <option value="4.5">4.5+ Stars</option>
@@ -331,7 +331,7 @@ export const PGSection: React.FC = () => {
             aria-label="Sort listings"
             className="px-4 py-2 border border-gray-200 rounded-lg text-sm"
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={(e: SelectChangeEvent) => setSortBy(e.target.value)}
           >
             <option value="relevance">Sort by Relevance</option>
             <option value="price-low">Price: Low to High</option>

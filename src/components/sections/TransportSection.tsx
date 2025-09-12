@@ -1,7 +1,7 @@
 import React from "react";
 import { useAccordion } from "@/hooks/useAccordion";
 import { TRANSPORT_DATA } from "@/data/transportData";
-import { AccordionItem as AccordionItemType } from "@/types";
+import { AccordionItem as AccordionItemType, BaseSectionProps } from "@/types";
 
 interface AccordionItemProps {
   item: AccordionItemType;
@@ -32,7 +32,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   </div>
 );
 
-export const TransportSection: React.FC = () => {
+export const TransportSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
   const { toggleItem, isOpen } = useAccordion();
 
   return (

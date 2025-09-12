@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Input } from './';
 import { useAuth } from '@/contexts/AuthContext';
+import { InputChangeEvent } from '../../types';
 
 interface AdminLoginModalProps {
   isOpen: boolean;
@@ -63,7 +64,7 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             label="Admin Password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: InputChangeEvent) => setPassword(e.target.value)}
             error={error}
             required
             disabled={isLoading}

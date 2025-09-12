@@ -3,7 +3,7 @@ import { Card, Button } from "@/components/ui";
 import { SECTIONS } from "@/data/constants";
 import { useWishlistContext } from "@/contexts/WishlistContext";
 import { formatCurrency } from "@/utils/helpers";
-import { WishlistItem } from "@/types";
+import { WishlistItem, BaseSectionProps } from "@/types";
 import { Trash2, MapPin, Calendar } from "lucide-react";
 
 // Add interfaces for props
@@ -115,7 +115,7 @@ const EmptyWishlist: React.FC<EmptyWishlistProps> = ({ onNavigate }) => (
   </div>
 );
 
-export const WishlistSection: React.FC<WishlistSectionProps> = ({
+export const WishlistSection: React.FC<BaseSectionProps> = ({
   onNavigate,
 }) => {
   const { wishlistItems, removeFromWishlist, clearWishlist, wishlistCount } =
