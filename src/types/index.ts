@@ -14,6 +14,13 @@ export interface PGListing {
   distance: string;
   facilities: string[];
   image?: string;
+  rating?: number;
+  reviewCount?: number;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
+  address?: string;
 }
 
 export interface AccordionItem {
@@ -39,6 +46,7 @@ export interface WishlistContextType {
   addToWishlist: (item: PGListing) => void;
   removeFromWishlist: (itemId: string) => void;
   isInWishlist: (itemId: string) => boolean;
+  toggleWishlist: (item: PGListing) => void;
   wishlistCount: number;
 }
 
