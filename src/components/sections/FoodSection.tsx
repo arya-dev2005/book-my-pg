@@ -1,7 +1,8 @@
 import React from "react";
 import { Card } from "@/components/ui";
+import { BaseSectionProps } from "@/types";
 
-export const FoodSection: React.FC = () => (
+export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => (
   <div className="animate-fadeIn space-y-8">
     <div>
       <h3 className="text-xl font-bold mb-4 text-gray-800">

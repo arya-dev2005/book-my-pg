@@ -1,7 +1,8 @@
 import React from "react";
 import { IconCard } from "@/components/ui";
+import { BaseSectionProps } from "@/types";
 
-export const CollegeSection: React.FC = () => (
+export const CollegeSection: React.FC<BaseSectionProps> = ({ onNavigate }) => (
   <div className="animate-fadeIn">
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <IconCard
