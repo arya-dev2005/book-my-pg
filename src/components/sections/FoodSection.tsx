@@ -1,36 +1,70 @@
+// src/components/sections/FoodSection.tsx
 import React, { useState, useMemo } from "react";
 import { Card, Button } from "@/components/ui";
 import { BaseSectionProps } from "@/types";
 import { FOOD_VENUES } from "@/data/newFoodData";
-import { Phone, Clock, MapPin, Tag, IndianRupee } from "lucide-react";
+import { Phone, Clock, MapPin, Tag } from "lucide-react";
+
+// ✅ Extended type for venues
+export interface FoodVenue {
+  id: string;
+  name: string;
+  type: string;
+  category: string;
+  description: string;
+  location: string;
+  timings: string;
+  contactNumber?: string;
+  image?: string;
+
+  // 👇 Optional fields that were missing
+  distanceFromCollege?: string;
+  delivery?: boolean;
+  onlineOrder?: boolean;
+  studentDiscount?: boolean | string;
+
+  menu?: {
+    name: string;
+    price: number;
+    isVeg: boolean;
+  }[];
+}
 
 interface FoodCardProps {
-  venue: typeof FOOD_VENUES[0];
+  venue: FoodVenue;
   onClick: () => void;
 }
 
 const FoodCard: React.FC<FoodCardProps> = ({ venue, onClick }) => (
-  <Card className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 h-full" onClick={onClick}>
+  <Card
+    className="overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 h-full"
+    onClick={onClick}
+  >
     {venue.image ? (
       <div className="h-48 overflow-hidden">
-        <img 
-          src={venue.image} 
+        <img
+          src={venue.image}
           alt={venue.name}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
       </div>
     ) : (
       <div className="h-48 bg-orange-100 flex items-center justify-center text-5xl">
-        {venue.type === 'restaurant' ? '🍽️' : 
-         venue.type === 'college-canteen' || venue.type === 'hostel-canteen' ? '🍱' :
-         venue.type === 'affordable-hotel' ? '🏪' :
-         venue.type === 'street-food' || venue.type === 'food-stall' ? '🌮' : '🍫'}
+        {venue.type === "restaurant"
+          ? "🍽️"
+          : venue.type === "college-canteen" || venue.type === "hostel-canteen"
+          ? "🍱"
+          : venue.type === "affordable-hotel"
+          ? "🏪"
+          : venue.type === "street-food" || venue.type === "food-stall"
+          ? "🌮"
+          : "🍫"}
       </div>
     )}
     <div className="p-4">
       <h4 className="font-bold text-lg mb-2">{venue.name}</h4>
       <p className="text-gray-600 text-sm mb-3">{venue.description}</p>
-      
+
       <div className="space-y-2 text-sm">
         <div className="flex items-center text-gray-500">
           <Clock size={16} className="mr-2" />
@@ -75,27 +109,30 @@ const FoodCard: React.FC<FoodCardProps> = ({ venue, onClick }) => (
 );
 
 export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
-  const [selectedVenue, setSelectedVenue] = useState<typeof FOOD_VENUES[0] | null>(null);
+  const [selectedVenue, setSelectedVenue] = useState<FoodVenue | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const categories = [
-    'College and Hostel Canteens',
-    'Affordable Hotels',
-    'Restaurants',
-    'Street Food and Food Stalls',
-    'Time Pass and Cravings'
+    "College and Hostel Canteens",
+    "Affordable Hotels",
+    "Restaurants",
+    "Street Food and Food Stalls",
+    "Time Pass and Cravings",
   ] as const;
 
   const categorizedVenues = useMemo(() => {
     return categories.reduce((acc, category) => {
-      acc[category] = FOOD_VENUES.filter(venue => {
-        const matchesSearch = !searchQuery || 
+      acc[category] = FOOD_VENUES.filter((venue) => {
+        const matchesSearch =
+          !searchQuery ||
           venue.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          venue.description.toLowerCase().includes(searchQuery.toLowerCase());
+          venue.description
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase());
         return venue.category === category && matchesSearch;
       });
       return acc;
-    }, {} as Record<typeof categories[number], typeof FOOD_VENUES>);
+    }, {} as Record<(typeof categories)[number], FoodVenue[]>);
   }, [searchQuery]);
 
   return (
@@ -120,14 +157,14 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
       </div>
 
       {/* All Food Sections */}
-      {categories.map(category => {
+      {categories.map((category) => {
         const venues = categorizedVenues[category];
         const icons = {
-          'College and Hostel Canteens': '🍱',
-          'Affordable Hotels': '🏪',
-          'Restaurants': '🍽️',
-          'Street Food and Food Stalls': '🌮',
-          'Time Pass and Cravings': '🍫'
+          "College and Hostel Canteens": "🍱",
+          "Affordable Hotels": "🏪",
+          Restaurants: "🍽️",
+          "Street Food and Food Stalls": "🌮",
+          "Time Pass and Cravings": "🍫",
         };
 
         return (
@@ -135,27 +172,39 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
             <h3 className="text-xl font-bold mb-4 text-gray-800">
               {icons[category]} {category}
             </h3>
-            <div className={`grid gap-6 ${
-              category === 'Restaurants' 
-                ? 'md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3' 
-                : 'md:grid-cols-2'
-            }`}>
+            <div
+              className={`grid gap-6 ${
+                category === "Restaurants"
+                  ? "md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3"
+                  : "md:grid-cols-2"
+              }`}
+            >
               {venues.length > 0 ? (
-                venues.map(venue => (
-                  <div className={category === 'Restaurants' ? 'transform transition-all duration-300 hover:scale-105' : ''}>
+                venues.map((venue) => (
+                  <div
+                    key={venue.id}
+                    className={
+                      category === "Restaurants"
+                        ? "transform transition-all duration-300 hover:scale-105"
+                        : ""
+                    }
+                  >
                     <FoodCard
-                      key={venue.id}
                       venue={venue}
                       onClick={() => setSelectedVenue(venue)}
                     />
                   </div>
                 ))
-              ) : searchQuery && (
-                <div className={`${
-                  category === 'Restaurants' ? 'col-span-3' : 'col-span-2'
-                } text-center py-4 text-gray-500`}>
-                  No {category.toLowerCase()} match your search.
-                </div>
+              ) : (
+                searchQuery && (
+                  <div
+                    className={`${
+                      category === "Restaurants" ? "col-span-3" : "col-span-2"
+                    } text-center py-4 text-gray-500`}
+                  >
+                    No {category.toLowerCase()} match your search.
+                  </div>
+                )
               )}
             </div>
           </div>
@@ -163,25 +212,26 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
       })}
 
       {/* No Results Message */}
-      {searchQuery && Object.values(categorizedVenues).every(venues => venues.length === 0) && (
-        <div className="text-center py-12">
-          <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
-            🔍
+      {searchQuery &&
+        Object.values(categorizedVenues).every(
+          (venues) => venues.length === 0
+        ) && (
+          <div className="text-center py-12">
+            <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+              🔍
+            </div>
+            <h3 className="text-xl font-bold text-gray-800 mb-3">
+              No Food Venues Found
+            </h3>
+            <p className="text-gray-600 mb-6">
+              No food venues match your search query. Try different keywords or
+              clear the search.
+            </p>
+            <Button variant="secondary" onClick={() => setSearchQuery("")}>
+              Clear Search
+            </Button>
           </div>
-          <h3 className="text-xl font-bold text-gray-800 mb-3">
-            No Food Venues Found
-          </h3>
-          <p className="text-gray-600 mb-6">
-            No food venues match your search query. Try different keywords or clear the search.
-          </p>
-          <Button 
-            variant="secondary"
-            onClick={() => setSearchQuery("")}
-          >
-            Clear Search
-          </Button>
-        </div>
-      )}
+        )}
 
       {/* Menu Modal */}
       {selectedVenue && (
@@ -197,7 +247,7 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
                   ✕
                 </button>
               </div>
-              
+
               <div className="space-y-4 mb-6">
                 <p className="text-gray-600">{selectedVenue.description}</p>
                 <div className="flex flex-wrap gap-4 text-sm">
@@ -235,13 +285,11 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
                       >
                         <div className="flex items-center">
                           <span className="mr-2">
-                            {item.isVeg ? '🟢' : '🔴'}
+                            {item.isVeg ? "🟢" : "🔴"}
                           </span>
                           <span>{item.name}</span>
                         </div>
-                        <span className="font-semibold">
-                          ₹{item.price}
-                        </span>
+                        <span className="font-semibold">₹{item.price}</span>
                       </div>
                     ))}
                   </div>
@@ -258,91 +306,3 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
     </div>
   );
 };
-
-  <div className="animate-fadeIn space-y-8">
-    <div>
-      <h3 className="text-xl font-bold mb-4 text-gray-800">
-        🍽️ College Canteen
-      </h3>
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card className="text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            🥘
-          </div>
-          <h4 className="font-bold mb-2">Main Canteen</h4>
-          <p className="text-gray-600 text-sm">
-            Affordable meals, snacks, and beverages. Open 8 AM - 8 PM
-          </p>
-        </Card>
-        <Card className="text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            ☕
-          </div>
-          <h4 className="font-bold mb-2">Coffee Corner</h4>
-          <p className="text-gray-600 text-sm">
-            Fresh coffee, tea, and quick bites. Perfect study spot!
-          </p>
-        </Card>
-      </div>
-    </div>
-
-    <div>
-      <h3 className="text-xl font-bold mb-4 text-gray-800">
-        🍕 Nearby Restaurants
-      </h3>
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            🍕
-          </div>
-          <h4 className="font-bold mb-2">Pizza Palace</h4>
-          <p className="text-gray-600 text-sm">
-            Student discounts available. Great for group orders
-          </p>
-        </Card>
-        <Card className="text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            🍛
-          </div>
-          <h4 className="font-bold mb-2">Curry House</h4>
-          <p className="text-gray-600 text-sm">
-            Authentic Indian cuisine at student-friendly prices
-          </p>
-        </Card>
-        <Card className="text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            🍔
-          </div>
-          <h4 className="font-bold mb-2">Burger Junction</h4>
-          <p className="text-gray-600 text-sm">
-            Quick bites and combo meals. Open till midnight
-          </p>
-        </Card>
-      </div>
-    </div>
-
-    <div>
-      <h3 className="text-xl font-bold mb-4 text-gray-800">🌮 Street Food</h3>
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card className="text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            🌮
-          </div>
-          <h4 className="font-bold mb-2">College Gate Stalls</h4>
-          <p className="text-gray-600 text-sm">
-            Chaat, samosas, and local favorites. Super affordable!
-          </p>
-        </Card>
-        <Card className="text-center">
-          <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-            🥙
-          </div>
-          <h4 className="font-bold mb-2">Evening Food Court</h4>
-          <p className="text-gray-600 text-sm">
-            Multiple vendors with variety of street food options
-          </p>
-        </Card>
-      </div>
-    </div>
-  </div>
-;
