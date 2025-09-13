@@ -7,20 +7,32 @@ export interface NavigationItem {
   component: React.ComponentType;
 }
 
+export interface RoomAvailability {
+  type: 'single' | 'double';
+  available: number;
+  price: number;
+}
+
 export interface PGListing {
   id: string;
   name: string;
-  price: number;
   distance: string;
   facilities: string[];
   image?: string;
   rating?: number;
   reviewCount?: number;
+  near?: string;
   coordinates?: {
     lat: number;
     lng: number;
   };
   address?: string;
+  rooms: RoomAvailability[];
+  isAvailable: boolean;
+}
+
+export interface WishlistItem extends Omit<PGListing, 'isAvailable' | 'image' | 'rating' | 'reviewCount' | 'near' | 'coordinates' | 'address'> {
+  addedAt: Date;
 }
 
 export interface AccordionItem {
@@ -34,6 +46,44 @@ export interface ContactForm {
   name: string;
   email: string;
   message: string;
+}
+
+export type FoodVenueType = 
+  | 'college-canteen' 
+  | 'hostel-canteen'
+  | 'affordable-hotel'
+  | 'restaurant'
+  | 'street-food'
+  | 'food-stall'
+  | 'time-pass-craving';
+
+export type FoodCategory =
+  | 'College and Hostel Canteens'
+  | 'Affordable Hotels'
+  | 'Restaurants'
+  | 'Street Food and Food Stalls'
+  | 'Time Pass and Cravings';
+
+export interface MenuItem {
+  name: string;
+  price: number;
+  isVeg: boolean;
+  category: string;
+}
+
+export interface FoodVenue {
+  id: string;
+  name: string;
+  type: FoodVenueType;
+  category: FoodCategory;
+  description: string;
+  image?: string;
+  timings: string;
+  contactNumber?: string;
+  menu?: MenuItem[];
+  location: string;
+  studentDiscount?: string;
+  priceRange: string;
 }
 
 export interface NavigationProps {

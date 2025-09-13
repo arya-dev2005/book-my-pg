@@ -52,9 +52,13 @@ const WishlistPGCard: React.FC<WishlistPGCardProps> = ({ pg, onRemove }) => {
         {/* Header */}
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-lg font-bold text-gray-800 pr-2">{pg.name}</h3>
-          <span className="text-blue-500 font-bold text-sm">
-            {formatCurrency(pg.price)}
-          </span>
+          <div className="text-right">
+            <div className="text-blue-500 font-bold text-sm">
+              {formatCurrency(Math.min(...pg.rooms.map(r => r.price)))}
+              <span className="text-gray-500 text-xs font-normal">/mo</span>
+            </div>
+            <div className="text-xs text-gray-500">onwards</div>
+          </div>
         </div>
 
         {/* Distance */}
@@ -164,7 +168,7 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({
           <div className="text-2xl font-bold text-green-500">
             ₹
             {Math.min(
-              ...wishlistItems.map((item) => item.price)
+              ...wishlistItems.flatMap((item) => item.rooms.map(r => r.price))
             ).toLocaleString()}
           </div>
           <div className="text-sm text-gray-600">Lowest Price</div>
@@ -173,7 +177,7 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({
           <div className="text-2xl font-bold text-orange-500">
             ₹
             {Math.max(
-              ...wishlistItems.map((item) => item.price)
+              ...wishlistItems.flatMap((item) => item.rooms.map(r => r.price))
             ).toLocaleString()}
           </div>
           <div className="text-sm text-gray-600">Highest Price</div>
@@ -182,7 +186,8 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({
           <div className="text-2xl font-bold text-purple-500">
             ₹
             {Math.round(
-              wishlistItems.reduce((sum, item) => sum + item.price, 0) /
+              wishlistItems.reduce((sum, item) => 
+                sum + Math.min(...item.rooms.map(r => r.price)), 0) /
                 wishlistCount
             ).toLocaleString()}
           </div>

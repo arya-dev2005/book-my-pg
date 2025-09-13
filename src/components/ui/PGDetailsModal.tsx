@@ -57,8 +57,12 @@ export const PGDetailsModal: React.FC<PGDetailsModalProps> = ({
         <div className="flex flex-col md:flex-row gap-6 mb-6">
           {/* Image */}
           <div className="md:w-1/2">
-            <div className="h-64 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white text-6xl">
-              🏠
+            <div className="h-64 rounded-xl overflow-hidden">
+              <img
+                src={pg.image}
+                alt={pg.name}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
           
@@ -67,7 +71,8 @@ export const PGDetailsModal: React.FC<PGDetailsModalProps> = ({
             <div>
               <h3 className="text-2xl font-bold text-gray-800 mb-2">{pg.name}</h3>
               <div className="text-3xl font-bold text-blue-500 mb-3">
-                {formatCurrency(pg.price)}
+                {formatCurrency(Math.min(...pg.rooms.map(r => r.price)))} - {formatCurrency(Math.max(...pg.rooms.map(r => r.price)))}
+                <span className="text-lg font-normal text-gray-500">/month</span>
               </div>
             </div>
 
@@ -81,6 +86,32 @@ export const PGDetailsModal: React.FC<PGDetailsModalProps> = ({
                 />
               </div>
             )}
+
+            {/* Room Availability */}
+            <div className="mb-4">
+              <h4 className="text-md font-semibold text-gray-800 mb-2">Room Availability</h4>
+              <div className={`text-sm font-medium mb-2 ${pg.isAvailable ? 'text-green-600' : 'text-red-600'}`}>
+                {pg.isAvailable ? '🟢 Rooms Available' : '🔴 No Rooms Available'}
+              </div>
+              {pg.isAvailable && (
+                <div className="space-y-2">
+                  {pg.rooms.map((room) => (
+                    <div key={room.type} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <span className="font-medium text-gray-800 capitalize">{room.type} Room</span>
+                        <div className="text-sm text-gray-600">
+                          {room.available} {room.available === 1 ? 'room' : 'rooms'} available
+                        </div>
+                      </div>
+                      <div className="text-blue-600 font-bold">
+                        {formatCurrency(room.price)}
+                        <span className="text-gray-500 text-sm font-normal">/month</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Location */}
             <div className="space-y-2">
