@@ -17,10 +17,7 @@ interface EmptyWishlistProps {
   onNavigate: (section: string) => void;
 }
 
-// Add navigation prop to WishlistSection
-interface WishlistSectionProps {
-  onNavigate: (section: string) => void;
-}
+
 
 const WishlistPGCard: React.FC<WishlistPGCardProps> = ({ pg, onRemove }) => {
   const formatDate = (date: Date) => {

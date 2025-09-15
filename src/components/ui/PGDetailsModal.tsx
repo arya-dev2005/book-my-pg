@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from "next/image";
 import { Modal, StarRating, Button } from './';
 import { PGListing } from '@/types';
 import { formatCurrency } from '@/utils/helpers';
@@ -58,11 +59,19 @@ export const PGDetailsModal: React.FC<PGDetailsModalProps> = ({
           {/* Image */}
           <div className="md:w-1/2">
             <div className="h-64 rounded-xl overflow-hidden">
-              <img
-                src={pg.image}
-                alt={pg.name}
-                className="w-full h-full object-cover"
-              />
+              {pg.image ? (
+                <Image
+                  src={pg.image}
+                  alt={pg.name}
+                  width={256}
+                  height={256}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="h-full w-full flex items-center justify-center text-white text-4xl bg-gray-200">
+                  🏠
+                </div>
+              )}
             </div>
           </div>
           

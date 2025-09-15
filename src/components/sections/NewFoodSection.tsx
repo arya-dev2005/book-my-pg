@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import Image from "next/image";
 import { Card, Button } from "@/components/ui";
 import { BaseSectionProps } from "@/types";
 import { FOOD_VENUES } from "@/data/foodData";
@@ -13,9 +14,11 @@ const FoodCard: React.FC<FoodCardProps> = ({ venue, onClick }) => (
   <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={onClick}>
     {venue.image ? (
       <div className="h-40 overflow-hidden">
-        <img 
+        <Image 
           src={venue.image} 
           alt={venue.name}
+          width={160}
+          height={160}
           className="w-full h-full object-cover"
         />
       </div>
@@ -60,7 +63,7 @@ const categories = [
   'Time Pass and Cravings'
 ] as const;
 
-export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
+export const NewFoodSection: React.FC<BaseSectionProps> = () => {
   const [selectedVenue, setSelectedVenue] = useState<typeof FOOD_VENUES[0] | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 

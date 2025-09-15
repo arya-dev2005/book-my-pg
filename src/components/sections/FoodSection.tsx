@@ -1,5 +1,6 @@
 // src/components/sections/FoodSection.tsx
 import React, { useState, useMemo } from "react";
+import Image from "next/image";
 import { Card, Button } from "@/components/ui";
 import { BaseSectionProps } from "@/types";
 import { FOOD_VENUES } from "@/data/newFoodData";
@@ -16,13 +17,10 @@ export interface FoodVenue {
   timings: string;
   contactNumber?: string;
   image?: string;
-
-  // 👇 Optional fields that were missing
   distanceFromCollege?: string;
   delivery?: boolean;
   onlineOrder?: boolean;
   studentDiscount?: boolean | string;
-
   menu?: {
     name: string;
     price: number;
@@ -42,9 +40,11 @@ const FoodCard: React.FC<FoodCardProps> = ({ venue, onClick }) => (
   >
     {venue.image ? (
       <div className="h-48 overflow-hidden">
-        <img
+        <Image
           src={venue.image}
           alt={venue.name}
+          width={400}
+          height={300}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
       </div>
@@ -87,19 +87,18 @@ const FoodCard: React.FC<FoodCardProps> = ({ venue, onClick }) => (
         )}
         <div className="flex flex-wrap gap-2 mt-2">
           {venue.delivery && (
-            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-700">
+            <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-700">
               🛵 Delivery Available
             </span>
           )}
           {venue.onlineOrder && (
-            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
+            <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-700">
               📱 Online Order
             </span>
           )}
           {venue.studentDiscount && (
-            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-orange-100 text-orange-700">
-              <Tag size={12} className="mr-1" />
-              Student Discount
+            <span className="px-2 py-1 rounded-full text-xs bg-orange-100 text-orange-700 flex items-center">
+              <Tag size={12} className="mr-1" /> Student Discount
             </span>
           )}
         </div>
@@ -108,17 +107,17 @@ const FoodCard: React.FC<FoodCardProps> = ({ venue, onClick }) => (
   </Card>
 );
 
-export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
+const categories = [
+  "College and Hostel Canteens",
+  "Affordable Hotels",
+  "Restaurants",
+  "Street Food and Food Stalls",
+  "Time Pass and Cravings",
+] as const;
+
+export const FoodSection: React.FC<BaseSectionProps> = () => {
   const [selectedVenue, setSelectedVenue] = useState<FoodVenue | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const categories = [
-    "College and Hostel Canteens",
-    "Affordable Hotels",
-    "Restaurants",
-    "Street Food and Food Stalls",
-    "Time Pass and Cravings",
-  ] as const;
 
   const categorizedVenues = useMemo(() => {
     return categories.reduce((acc, category) => {
@@ -126,9 +125,7 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
         const matchesSearch =
           !searchQuery ||
           venue.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          venue.description
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase());
+          venue.description.toLowerCase().includes(searchQuery.toLowerCase());
         return venue.category === category && matchesSearch;
       });
       return acc;
@@ -137,7 +134,7 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
 
   return (
     <div className="animate-fadeIn space-y-8">
-      {/* Search Section */}
+      {/* 🔍 Search */}
       <div className="mb-6">
         <input
           type="text"
@@ -156,7 +153,7 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
         )}
       </div>
 
-      {/* All Food Sections */}
+      {/* 🍽️ Categories */}
       {categories.map((category) => {
         const venues = categorizedVenues[category];
         const icons = {
@@ -175,25 +172,17 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
             <div
               className={`grid gap-6 ${
                 category === "Restaurants"
-                  ? "md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3"
+                  ? "md:grid-cols-3"
                   : "md:grid-cols-2"
               }`}
             >
               {venues.length > 0 ? (
                 venues.map((venue) => (
-                  <div
+                  <FoodCard
                     key={venue.id}
-                    className={
-                      category === "Restaurants"
-                        ? "transform transition-all duration-300 hover:scale-105"
-                        : ""
-                    }
-                  >
-                    <FoodCard
-                      venue={venue}
-                      onClick={() => setSelectedVenue(venue)}
-                    />
-                  </div>
+                    venue={venue}
+                    onClick={() => setSelectedVenue(venue)}
+                  />
                 ))
               ) : (
                 searchQuery && (
@@ -211,11 +200,9 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
         );
       })}
 
-      {/* No Results Message */}
+      {/* ❌ No Results */}
       {searchQuery &&
-        Object.values(categorizedVenues).every(
-          (venues) => venues.length === 0
-        ) && (
+        Object.values(categorizedVenues).every((venues) => venues.length === 0) && (
           <div className="text-center py-12">
             <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
               🔍
@@ -224,8 +211,7 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
               No Food Venues Found
             </h3>
             <p className="text-gray-600 mb-6">
-              No food venues match your search query. Try different keywords or
-              clear the search.
+              No food venues match your search query. Try different keywords or clear the search.
             </p>
             <Button variant="secondary" onClick={() => setSearchQuery("")}>
               Clear Search
@@ -233,7 +219,7 @@ export const FoodSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
           </div>
         )}
 
-      {/* Menu Modal */}
+      {/* 🍴 Menu Modal */}
       {selectedVenue && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">

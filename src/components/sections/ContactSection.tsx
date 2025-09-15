@@ -26,7 +26,7 @@ const SocialLinks: React.FC = () => (
   </div>
 );
 
-export const ContactSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
+export const ContactSection: React.FC<BaseSectionProps> = () => {
   const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",

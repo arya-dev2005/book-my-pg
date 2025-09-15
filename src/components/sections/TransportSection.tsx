@@ -32,7 +32,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   </div>
 );
 
-export const TransportSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
+export const TransportSection: React.FC<BaseSectionProps> = () => {
   const { toggleItem, isOpen } = useAccordion();
 
   return (

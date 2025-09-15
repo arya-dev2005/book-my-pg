@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Card, Button, StarRating, PGDetailsModal } from "@/components/ui";
+import Image from "next/image";
+import { Card, Button, PGDetailsModal } from "@/components/ui";
 import { PG_LISTINGS } from "@/data/pgListings";
-import { PGListing, SelectChangeEvent, FilterState, BaseSectionProps } from "@/types";
+import { PGListing, SelectChangeEvent, BaseSectionProps } from "@/types";
 import { formatCurrency } from "@/utils/helpers";
 import { useWishlistContext } from "@/contexts/WishlistContext";
 import { Heart, MapPin, ExternalLink } from "lucide-react";
@@ -51,9 +52,11 @@ const PGCard: React.FC<PGCardProps> = ({ pg, onViewDetails }) => {
       {/* PG Image */}
       <div className="h-40 bg-gradient-to-r from-blue-500 to-blue-600 relative overflow-hidden">
         {pg.image ? (
-          <img 
+          <Image 
             src={pg.image} 
             alt={pg.name}
+            width={160}
+            height={160}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -147,7 +150,7 @@ const PGCard: React.FC<PGCardProps> = ({ pg, onViewDetails }) => {
   );
 };
 
-export const PGSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
+export const PGSection: React.FC<BaseSectionProps> = () => {
   const { wishlistCount, toggleWishlist, isInWishlist } = useWishlistContext();
   
   // Filter state
@@ -290,7 +293,7 @@ export const PGSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
       default:
         return filtered;
     }
-  }, [PG_LISTINGS, searchQuery, priceFilter, distanceFilter, locationFilter, roomTypeFilter, availabilityFilter, sortBy]);
+  }, [searchQuery, priceFilter, distanceFilter, locationFilter, roomTypeFilter, availabilityFilter, sortBy]);
 
   // Debug total count and filters
   useEffect(() => {
