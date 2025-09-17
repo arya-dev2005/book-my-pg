@@ -2,33 +2,37 @@ import { AccordionItem } from '@/types';
 
 export const TRANSPORT_DATA: AccordionItem[] = [
   {
+    id: 'train',
+    title: '🚆 By Train (From Kolkata/Howrah)',
+    icon: '🚆',
+    content: `• Go to Howrah Junction.
+• Board a Howrah → Haldia local/intercity (or to Durgachak if no direct Haldia train at that time).
+• Get down at Haldia (or Durgachak).
+• Outside the station, take an auto/toto or taxi to “Haldia Institute of Technology, ICARE Complex, Hatiberia.”
+• Tell the driver: “HIT / ICARE Complex, Hatiberia”.`
+  },
+  {
     id: 'bus',
-    title: '🚌 Bus Routes',
+    title: '🚌 By Bus',
     icon: '🚌',
-    content: `Main Bus Routes:
-• Route 15: College Gate → City Center (Every 15 mins)
-• Route 23: College → Railway Station (Every 20 mins)
-• Route 7: College → Airport (Every 30 mins)
-Bus Timings: 6:00 AM - 11:00 PM`
+    content: `• From Esplanade (Dharmatala) or Howrah bus terminus, board a bus to Haldia / Durgachak.
+• Get down at Haldia (or Durgachak) bus stop/stand.
+• Take a shared auto/taxi to HIT (ICARE Complex, Hatiberia).`
   },
   {
-    id: 'metro',
-    title: '🚇 Train & Metro',
-    icon: '🚇',
-    content: `Nearest Metro Station: College Road Metro (500m walk)
-Metro Lines:
-• Blue Line: College Road → Central Station
-• Green Line: College Road → Business District
-Metro Timings: 5:30 AM - 12:00 AM`
+    id: 'car_taxi',
+    title: '🚗 By Car/Taxi',
+    icon: '🚗',
+    content: `• Start from Kolkata → take NH16 (Kolkata–Kharagpur).
+• Near Kolaghat / Nandakumar, turn onto NH116 toward Haldia.
+• Enter Haldia and follow signs / maps to “Haldia Institute of Technology ICARE Complex, Hatiberia.”
+• Parking is available near the main gate.`
   },
   {
-    id: 'airport',
-    title: '✈️ Airport Connectivity',
+    id: 'air',
+    title: '✈️ By Air',
     icon: '✈️',
-    content: `Distance to Airport: 25 km (45 mins by metro)
-Transportation Options:
-• Metro: Blue Line direct to Airport
-• Bus: Route 7 (Direct service)
-• Taxi/Cab: Available 24/7`
+    content: `• Land at Kolkata (Netaji Subhas Chandra Bose Intl. Airport – CCU).
+• Hire a taxi/app cab → route NH16 → NH116 → Haldia → HIT (ICARE Complex, Hatiberia).`
   }
 ];
