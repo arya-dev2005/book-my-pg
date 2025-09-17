@@ -50,7 +50,7 @@ college-city-guide/
 1. **Clone the repository**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/arya-dev2005/book-my-pg.git
 cd book-my-pg
 ```
 

@@ -13,8 +13,13 @@ export const useWishlist = () => {
       
       // Add new item with timestamp
       const newWishlistItem: WishlistItem = {
-        ...item,
-        addedAt: new Date()
+        id: item.id,
+        name: item.name,
+        distance: item.distance,
+        facilities: [...item.facilities],
+        rooms: item.rooms,
+        addedAt: new Date(),
+        isAvailable: item.isAvailable
       };
       
       return [...prev, newWishlistItem];

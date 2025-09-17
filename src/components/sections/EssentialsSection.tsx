@@ -1,7 +1,8 @@
 import React from "react";
 import { Card } from "@/components/ui";
+import { BaseSectionProps } from "@/types";
 
-export const EssentialsSection: React.FC = () => (
+export const EssentialsSection: React.FC<BaseSectionProps> = () => (
   <div className="animate-fadeIn">
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <Card>

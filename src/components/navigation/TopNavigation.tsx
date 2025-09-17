@@ -17,7 +17,7 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({ onNavigate }) => {
           <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
             🏠
           </div>
-          <span className="text-lg font-bold text-gray-800">Book My PG</span>
+          <span className="text-lg font-bold text-gray-800">Your Collage</span>
         </div>
 
         {/* Right Side Buttons */}

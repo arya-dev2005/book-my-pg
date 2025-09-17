@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, Button, Input, TextArea } from "@/components/ui";
-import { ContactForm } from "@/types";
+import { ContactForm, BaseSectionProps } from "@/types";
 import { validateEmail } from "@/utils/helpers";
 
 const SocialLinks: React.FC = () => (
@@ -26,7 +26,7 @@ const SocialLinks: React.FC = () => (
   </div>
 );
 
-export const ContactSection: React.FC = () => {
+export const ContactSection: React.FC<BaseSectionProps> = () => {
   const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",
