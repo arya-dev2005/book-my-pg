@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+// -----------------------------
+// Users
+// -----------------------------
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String    // hashed
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  wishlists Wishlist[]
+}
+
+// -----------------------------
+// Paying Guest (PG)
+// -----------------------------
+model PG {
+  id         String    @id @default(cuid())
+  name       String
+  address    String
+  price      Float
+  facilities String[]   // ["WiFi","Laundry","Food"]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  collegeId String?
+  college   College?   @relation(fields: [collegeId], references: [id])
+
+  media     Media[]
+  wishlists Wishlist[]
+  foods     Food[]
+  transports Transport[]
+}
+
+// -----------------------------
+// College
+// -----------------------------
+model College {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pgs   PG[]
+  media Media[]
+  transports Transport[]
+}
+
+// -----------------------------
+// Wishlist (User <-> PG)
+// -----------------------------
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  pgId      String
+  user      User     @relation(fields: [userId], references: [id])
+  pg        PG       @relation(fields: [pgId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, pgId])
+}
+
+// -----------------------------
+// Media (images/videos)
+// -----------------------------
+model Media {
+  id        String    @id @default(cuid())
+  url       String
+  type      MediaType
+  createdAt DateTime  @default(now())
+
+  pgId      String?
+  pg        PG?       @relation(fields: [pgId], references: [id])
+
+  collegeId String?
+  college   College?  @relation(fields: [collegeId], references: [id])
+
+  foodId    String?
+  food      Food?     @relation(fields: [foodId], references: [id])
+
+  transportId String?
+  transport   Transport? @relation(fields: [transportId], references: [id])
+}
+
+// -----------------------------
+// Food
+// -----------------------------
+model Food {
+  id        String   @id @default(cuid())
+  name      String
+  type      FoodType
+  price     Float
+  available Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pgId  String?
+  pg    PG?     @relation(fields: [pgId], references: [id])
+  media Media[]
+}
+
+// -----------------------------
+// Transport
+// -----------------------------
+model Transport {
+  id           String        @id @default(cuid())
+  name         String        // e.g., "Shuttle A", "Bus 42"
+  type         TransportType
+  route        String?       // textual route: "College -> Station"
+  startPoint   String?
+  endPoint     String?
+  fare         Float?
+  schedule     String?       // simple schedule string for now
+  available    Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  pgId      String?
+  pg        PG?        @relation(fields: [pgId], references: [id])
+
+  collegeId String?
+  college   College?   @relation(fields: [collegeId], references: [id])
+
+  media Media[]
+}
+
+// -----------------------------
+// Enums
+// -----------------------------
+enum Role {
+  USER
+  ADMIN
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum FoodType {
+  VEG
+  NON_VEG
+  VEGAN
+  MIXED
+}
+
+enum TransportType {
+  BUS
+  SHUTTLE
+  TRAIN
+  METRO
+  OTHER
+}

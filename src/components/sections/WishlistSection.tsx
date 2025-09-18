@@ -17,8 +17,6 @@ interface EmptyWishlistProps {
   onNavigate: (section: string) => void;
 }
 
-
-
 const WishlistPGCard: React.FC<WishlistPGCardProps> = ({ pg, onRemove }) => {
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("en-IN", {
@@ -51,7 +49,7 @@ const WishlistPGCard: React.FC<WishlistPGCardProps> = ({ pg, onRemove }) => {
           <h3 className="text-lg font-bold text-gray-800 pr-2">{pg.name}</h3>
           <div className="text-right">
             <div className="text-blue-500 font-bold text-sm">
-              {formatCurrency(Math.min(...pg.rooms.map(r => r.price)))}
+              {formatCurrency(Math.min(...pg.rooms.map((r) => r.price)))}
               <span className="text-gray-500 text-xs font-normal">/mo</span>
             </div>
             <div className="text-xs text-gray-500">onwards</div>
@@ -116,9 +114,7 @@ const EmptyWishlist: React.FC<EmptyWishlistProps> = ({ onNavigate }) => (
   </div>
 );
 
-export const WishlistSection: React.FC<BaseSectionProps> = ({
-  onNavigate,
-}) => {
+export const WishlistSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
   const { wishlistItems, removeFromWishlist, clearWishlist, wishlistCount } =
     useWishlistContext();
 
@@ -165,7 +161,7 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({
           <div className="text-2xl font-bold text-green-500">
             ₹
             {Math.min(
-              ...wishlistItems.flatMap((item) => item.rooms.map(r => r.price))
+              ...wishlistItems.flatMap((item) => item.rooms.map((r) => r.price))
             ).toLocaleString()}
           </div>
           <div className="text-sm text-gray-600">Lowest Price</div>
@@ -174,7 +170,7 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({
           <div className="text-2xl font-bold text-orange-500">
             ₹
             {Math.max(
-              ...wishlistItems.flatMap((item) => item.rooms.map(r => r.price))
+              ...wishlistItems.flatMap((item) => item.rooms.map((r) => r.price))
             ).toLocaleString()}
           </div>
           <div className="text-sm text-gray-600">Highest Price</div>
@@ -183,9 +179,11 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({
           <div className="text-2xl font-bold text-purple-500">
             ₹
             {Math.round(
-              wishlistItems.reduce((sum, item) => 
-                sum + Math.min(...item.rooms.map(r => r.price)), 0) /
-                wishlistCount
+              wishlistItems.reduce(
+                (sum, item) =>
+                  sum + Math.min(...item.rooms.map((r) => r.price)),
+                0
+              ) / wishlistCount
             ).toLocaleString()}
           </div>
           <div className="text-sm text-gray-600">Avg Price</div>
@@ -194,7 +192,10 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({
 
       {/* Sorting and Filtering */}
       <div className="flex flex-wrap gap-3 mb-6">
-        <select className="px-4 py-2 border border-gray-200 rounded-lg text-sm">
+        <select
+          className="px-4 py-2 border border-gray-200 rounded-lg text-sm"
+          aria-label="Sort wishlist items"
+        >
           <option value="recent">Recently Added</option>
           <option value="price-low">Price: Low to High</option>
           <option value="price-high">Price: High to Low</option>

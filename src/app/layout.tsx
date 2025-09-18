@@ -1,10 +1,15 @@
-import type { Metadata } from "next";
 import "./globals.css";
+import { Inter } from "next/font/google";
+import { Providers } from "@/components/providers";
+import { Metadata } from "next";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "College City Student Guide",
+  title: "Book My PG - Find Perfect Student Accommodation",
   description:
-    "Your ultimate student guide for everything you need around campus",
+    "Discover comfortable and affordable PG accommodations near your college. Manage food, transport, and essentials all in one place.",
+  keywords: "PG, student accommodation, hostel, college, food, transport",
 };
 
 export default function RootLayout({
@@ -14,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white">{children}</body>
+      <body className={inter.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
