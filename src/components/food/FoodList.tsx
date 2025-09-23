@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 interface Food {
   id: string;
   name: string;
+<<<<<<< HEAD
   type: string;
   price: number;
   available: boolean;
@@ -16,13 +17,20 @@ interface Food {
     name: string;
     address: string;
   };
+=======
+  type: "VEG" | "NON_VEG" | "VEGAN" | "MIXED";
+>>>>>>> 37f8921d36bb6a6495f1a64c492f92c3b3b4a78e
 }
 
 export function FoodList() {
   const { foods, loading, error, createFood, updateFood, deleteFood } =
     useFood();
   const [showForm, setShowForm] = useState(false);
+<<<<<<< HEAD
   const [editingFood, setEditingFood] = useState<Food | null>(null);
+=======
+  const [editingFood, setEditingFood] = useState<FoodData | null>(null);
+>>>>>>> 37f8921d36bb6a6495f1a64c492f92c3b3b4a78e
 
   const handleCreate = async (data: any) => {
     await createFood(data);

@@ -191,7 +191,7 @@ export async function DELETE(
     }
 
     // Delete in order due to foreign key constraints
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       // Delete wishlists first
       await tx.wishlist.deleteMany({
         where: { pgId: id }

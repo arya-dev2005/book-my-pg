@@ -140,7 +140,7 @@ export const PGDetailsModal: React.FC<PGDetailsModalProps> = ({
             <div className="flex gap-3 pt-4">
               <Button 
                 onClick={onWishlist}
-                variant={isWishlisted ? "primary" : "secondary"}
+                variant={isWishlisted ? "default" : "secondary"}
                 className="flex-1"
               >
                 {isWishlisted ? "❤️ In Wishlist" : "❤️ Add to Wishlist"}
