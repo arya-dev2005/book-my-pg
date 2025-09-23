@@ -203,7 +203,7 @@ export async function DELETE(
     }
 
     // Delete college media and then college
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       await tx.media.deleteMany({
         where: { collegeId: id }
       })

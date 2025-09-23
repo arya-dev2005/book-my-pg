@@ -9,17 +9,14 @@ import { Button } from "@/components/ui/Button";
 interface FoodData {
   id: string;
   name: string;
-  type: string;
-  const [editingFood, setEditingFood] = useState<FoodData | null>(null);
-
-  const handleCreate = async (data: Omit<FoodData, 'id'>) => {
+  type: "VEG" | "NON_VEG" | "VEGAN" | "MIXED";
 }
 
 export function FoodList() {
   const { foods, loading, error, createFood, updateFood, deleteFood } =
     useFood();
   const [showForm, setShowForm] = useState(false);
-  const [editingFood, setEditingFood] = useState(null);
+  const [editingFood, setEditingFood] = useState<FoodData | null>(null);
 
   const handleCreate = async (data: any) => {
     await createFood(data);
