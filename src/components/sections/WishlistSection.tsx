@@ -84,7 +84,7 @@ const WishlistPGCard: React.FC<WishlistPGCardProps> = ({ pg, onRemove }) => {
 
         {/* Actions */}
         <div className="flex gap-2">
-          <Button className="flex-1" variant="primary">
+          <Button className="flex-1" variant="default">
             View Details
           </Button>
           <Button className="flex-1" variant="secondary">
@@ -108,7 +108,7 @@ const EmptyWishlist: React.FC<EmptyWishlistProps> = ({ onNavigate }) => (
       Start exploring PGs and add your favorites to your wishlist. You can save
       up to 50 properties for easy comparison.
     </p>
-    <Button variant="primary" onClick={() => onNavigate(SECTIONS.PG)}>
+    <Button variant="default" onClick={() => onNavigate(SECTIONS.PG)}>
       Browse PGs
     </Button>
   </div>
@@ -232,7 +232,7 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
               Browse more PGs to add to your wishlist
             </p>
           </div>
-          <Button variant="primary" onClick={() => onNavigate(SECTIONS.PG)}>
+          <Button variant="default" onClick={() => onNavigate(SECTIONS.PG)}>
             Browse More PGs
           </Button>
         </div>
@@ -246,7 +246,7 @@ export const WishlistSection: React.FC<BaseSectionProps> = ({ onNavigate }) => {
               Compare your saved PGs and make the best choice
             </p>
           </div>
-          <Button variant="primary">Compare All</Button>
+          <Button variant="default">Compare All</Button>
         </div>
       </div>
     </div>
