@@ -1,21 +1,18 @@
-// components/food/FoodForm.tsx
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-
-interface FoodItem {
-  name: string;
-  type: "VEG" | "NON_VEG" | "VEGAN" | "MIXED";
-  price: number | string;
-  available: boolean;
-  pgId: string;
-}
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface FoodFormProps {
-  initialData?: Partial<FoodItem>;
-  onSubmit: (data: FoodItem) => Promise<void>;
+  initialData?: {
+    name: string;
+    type: string;
+    price: number;
+    available: boolean;
+    pgId?: string;
+  };
+  onSubmit: (data: any) => Promise<void>;
   onCancel?: () => void;
   isEditing?: boolean;
 }
@@ -29,7 +26,7 @@ export function FoodForm({
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     type: initialData?.type || "VEG",
-    price: initialData?.price || "",
+    price: initialData?.price?.toString() || "",
     available: initialData?.available !== false,
     pgId: initialData?.pgId || "",
   });
@@ -44,7 +41,7 @@ export function FoodForm({
     try {
       await onSubmit({
         ...formData,
-        price: parseFloat(formData.price.toString()),
+        price: parseFloat(formData.price),
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -63,7 +60,6 @@ export function FoodForm({
         <div>
           <label className="block text-sm font-medium mb-1">Name</label>
           <Input
-            label="Name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
@@ -75,15 +71,9 @@ export function FoodForm({
           <label className="block text-sm font-medium mb-1">Type</label>
           <select
             value={formData.type}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                type: e.target.value as "VEG" | "NON_VEG" | "VEGAN" | "MIXED",
-              })
-            }
+            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
             className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             required
-            aria-label="Food type"
           >
             <option value="VEG">Vegetarian</option>
             <option value="NON_VEG">Non-Vegetarian</option>
@@ -93,8 +83,8 @@ export function FoodForm({
         </div>
 
         <div>
+          <label className="block text-sm font-medium mb-1">Price (₹)</label>
           <Input
-            label="Price"
             type="number"
             step="0.01"
             min="0"
@@ -104,16 +94,6 @@ export function FoodForm({
             }
             required
             placeholder="0.00"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">PG ID</label>
-          <Input
-            label="PG ID"
-            value={formData.pgId}
-            onChange={(e) => setFormData({ ...formData, pgId: e.target.value })}
-            placeholder="Associated PG ID"
           />
         </div>
 
@@ -143,7 +123,7 @@ export function FoodForm({
             {isLoading ? "Saving..." : isEditing ? "Update" : "Create"}
           </Button>
           {onCancel && (
-            <Button type="button" variant="secondary" onClick={onCancel}>
+            <Button type="button" variant="outline" onClick={onCancel}>
               Cancel
             </Button>
           )}

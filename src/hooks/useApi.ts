@@ -1,12 +1,56 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 
+// Define proper interfaces
+interface Food {
+  id: string
+  name: string
+  type: 'VEG' | 'NON_VEG' | 'VEGAN' | 'MIXED'
+  price: number
+  available: boolean
+  pgId?: string
+  pg?: {
+    id: string
+    name: string
+    address: string
+  }
+  media?: Array<{
+    id: string
+    url: string
+    type: string
+  }>
+}
+
+interface CreateFoodData {
+  name: string
+  type: 'VEG' | 'NON_VEG' | 'VEGAN' | 'MIXED'
+  price: number
+  available: boolean
+  pgId?: string
+}
+
+interface PG {
+  id: string
+  name: string
+  address: string
+  price: number
+  facilities: string[]
+  collegeId?: string
+}
+
+interface WishlistItem {
+  id: string
+  userId: string
+  pgId: string
+  pg: PG
+  createdAt: string
+}
+
 // Generic API hook
 export function useApi<T>(endpoint: string, options?: RequestInit) {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const { data: session } = useSession()
 
   const fetchData = useCallback(async () => {
     try {
@@ -41,13 +85,13 @@ export function useApi<T>(endpoint: string, options?: RequestInit) {
   return { data, loading, error, refetch: fetchData }
 }
 
-// Food API hook
+// Food API hook with proper types
 export function useFood() {
-  const [foods, setFoods] = useState([])
+  const [foods, setFoods] = useState<Food[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchFoods = useCallback(async (filters?: any) => {
+  const fetchFoods = useCallback(async (filters?: Record<string, string>) => {
     try {
       setLoading(true)
       const params = new URLSearchParams(filters)
@@ -67,7 +111,7 @@ export function useFood() {
     }
   }, [])
 
-  const createFood = async (foodData: any) => {
+  const createFood = async (foodData: CreateFoodData) => {
     try {
       const response = await fetch('/api/food', {
         method: 'POST',
@@ -90,7 +134,7 @@ export function useFood() {
     }
   }
 
-  const updateFood = async (id: string, foodData: any) => {
+  const updateFood = async (id: string, foodData: Partial<CreateFoodData>) => {
     try {
       const response = await fetch(`/api/food/${id}`, {
         method: 'PUT',
@@ -145,71 +189,9 @@ export function useFood() {
   }
 }
 
-// PG API hook
-export function usePG() {
-  const [pgs, setPgs] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  const fetchPGs = useCallback(async (filters?: any) => {
-    try {
-      setLoading(true)
-      const params = new URLSearchParams(filters)
-      const response = await fetch(`/api/pg?${params}`)
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch PGs')
-      }
-      
-      const data = await response.json()
-      setPgs(data.pgs)
-      setError(null)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  const createPG = async (pgData: any) => {
-    try {
-      const response = await fetch('/api/pg', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(pgData),
-      })
-      
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to create PG')
-      }
-      
-      const newPG = await response.json()
-      await fetchPGs() // Refresh list
-      return newPG
-    } catch (error) {
-      throw error
-    }
-  }
-
-  useEffect(() => {
-    fetchPGs()
-  }, [fetchPGs])
-
-  return {
-    pgs,
-    loading,
-    error,
-    createPG,
-    refetch: fetchPGs,
-  }
-}
-
-// Wishlist API hook
+// Wishlist API hook with proper types
 export function useWishlist() {
-  const [wishlist, setWishlist] = useState([])
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { data: session } = useSession()

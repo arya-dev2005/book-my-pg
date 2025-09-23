@@ -1,4 +1,3 @@
-// components/auth/ProtectedRoute.tsx
 "use client";
 
 import { useSession } from "next-auth/react";

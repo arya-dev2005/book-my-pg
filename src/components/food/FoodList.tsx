@@ -1,25 +1,28 @@
-// components/food/FoodList.tsx
 "use client";
 
 import { useState } from "react";
 import { useFood } from "@/hooks/useApi";
 import { FoodForm } from "./FoodForm";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
-interface FoodData {
+interface Food {
   id: string;
   name: string;
   type: string;
-  const [editingFood, setEditingFood] = useState<FoodData | null>(null);
-
-  const handleCreate = async (data: Omit<FoodData, 'id'>) => {
+  price: number;
+  available: boolean;
+  pg?: {
+    id: string;
+    name: string;
+    address: string;
+  };
 }
 
 export function FoodList() {
   const { foods, loading, error, createFood, updateFood, deleteFood } =
     useFood();
   const [showForm, setShowForm] = useState(false);
-  const [editingFood, setEditingFood] = useState(null);
+  const [editingFood, setEditingFood] = useState<Food | null>(null);
 
   const handleCreate = async (data: any) => {
     await createFood(data);
@@ -64,7 +67,7 @@ export function FoodList() {
       )}
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {foods.map((food: any) => (
+        {foods.map((food: Food) => (
           <div key={food.id} className="bg-white rounded-lg shadow-md p-4">
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-semibold">{food.name}</h3>

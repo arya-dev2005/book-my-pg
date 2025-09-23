@@ -1,11 +1,10 @@
-// components/auth/LoginForm.tsx
 "use client";
 
 import { useState } from "react";
-import { signIn, getSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function LoginForm() {
   const [formData, setFormData] = useState({
@@ -31,7 +30,6 @@ export function LoginForm() {
       if (result?.error) {
         setError("Invalid email or password");
       } else {
-        await getSession(); // Refresh session
         router.push("/dashboard");
         router.refresh();
       }
@@ -50,7 +48,6 @@ export function LoginForm() {
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
           <Input
-            label="Email"
             type="email"
             value={formData.email}
             onChange={(e) =>
@@ -62,8 +59,8 @@ export function LoginForm() {
         </div>
 
         <div>
+          <label className="block text-sm font-medium mb-1">Password</label>
           <Input
-            label="Password"
             type="password"
             value={formData.password}
             onChange={(e) =>

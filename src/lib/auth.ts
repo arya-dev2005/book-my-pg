@@ -1,10 +1,10 @@
-import { NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
 import { loginSchema } from './validators'
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -39,9 +39,9 @@ export const authOptions: NextAuthOptions = {
           throw new Error('No user found with this email')
         }
 
-        // Verify password
+        // Verify password - FIXED: Cast credentials.password to string
         const isValidPassword = await bcrypt.compare(
-          credentials.password,
+          String(credentials.password),
           user.password
         )
 
@@ -62,9 +62,6 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  jwt: {
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -82,6 +79,5 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/signup',
   }
-}
+})

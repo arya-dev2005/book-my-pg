@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createFoodSchema } from '@/lib/validators'
-import { authOptions } from '@/lib/auth'
 
 // GET /api/food - List all food items
 export async function GET(request: NextRequest) {
@@ -71,7 +70,7 @@ export async function GET(request: NextRequest) {
 // POST /api/food - Create new food item
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
     
     if (!session) {
       return NextResponse.json(

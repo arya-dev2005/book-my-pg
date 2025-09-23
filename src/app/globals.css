@@ -1,7 +1,11 @@
-/* @import "tailwindcss"; */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+/* @import "normalize.css"; */
+@import "base.css";
+/* @tailwind base; */
+@import "components.css";
+@import "utilities.css";
+/* @tailwind components; */
+/* @tailwind utilities; */
 
 .animate-fadeIn {
     animation: fadeIn 0.3s ease-in-out;

@@ -11,7 +11,6 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error("Application Error:", error);
   }, [error]);
 
@@ -22,7 +21,8 @@ export default function Error({
           Oops! Something went wrong
         </h1>
         <p className="text-gray-600 mb-8 max-w-md">
-          We're sorry for the inconvenience. Please try refreshing the page.
+          We&apos;re sorry for the inconvenience. Please try refreshing the
+          page.
         </p>
         <div className="space-x-4">
           <Button onClick={() => reset()}>Try again</Button>

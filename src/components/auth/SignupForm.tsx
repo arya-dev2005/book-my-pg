@@ -1,10 +1,9 @@
-// components/auth/SignupForm.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function SignupForm() {
   const [formData, setFormData] = useState({
@@ -48,8 +47,9 @@ export function SignupForm() {
       } else {
         setError(data.error || "Something went wrong");
       }
-    } catch (error) {
+    } catch (err) {
       setError("Network error occurred");
+      console.error("Signup error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -68,11 +68,11 @@ export function SignupForm() {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
             placeholder="Enter your full name"
-            label="Name"
           />
         </div>
 
         <div>
+          <label className="block text-sm font-medium mb-1">Email</label>
           <Input
             type="email"
             value={formData.email}
@@ -81,11 +81,11 @@ export function SignupForm() {
             }
             required
             placeholder="Enter your email"
-            label="Email"
           />
         </div>
 
         <div>
+          <label className="block text-sm font-medium mb-1">Password</label>
           <Input
             type="password"
             value={formData.password}
@@ -95,11 +95,13 @@ export function SignupForm() {
             required
             placeholder="Enter password (min 6 characters)"
             minLength={6}
-            label="Password"
           />
         </div>
 
         <div>
+          <label className="block text-sm font-medium mb-1">
+            Confirm Password
+          </label>
           <Input
             type="password"
             value={formData.confirmPassword}
@@ -108,7 +110,6 @@ export function SignupForm() {
             }
             required
             placeholder="Confirm your password"
-            label="Confirm Password"
           />
         </div>
 
